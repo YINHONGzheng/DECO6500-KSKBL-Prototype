@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Route Reliability Research Prototype</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/prototype.js') }}" defer></script>
+</head>
+<body>
+  <main class="workspace">
+    <section class="participant-area" aria-label="Participant-facing interface">
+      <div class="phone-shell">
+        <div class="phone-topbar" aria-hidden="true"><span>Journey update</span><span>●</span></div>
+
+        <section id="welcomeScreen" class="screen intro-screen">
+          <p class="eyebrow">Research scenario</p>
+          <h1>Bus service information</h1>
+          <p>Select a scenario from the researcher controls to begin.</p>
+        </section>
+
+        <section id="contextScreen" class="screen context-screen" hidden>
+          <p class="eyebrow">Scenario Context</p>
+          <h1>Your bus journey</h1>
+          <p>You are waiting for Route 139 from Sunnybank to UQ Lakes. The bus has not arrived yet.</p>
+          <p>Please review the information provided and decide what you would do next.</p>
+          <div class="scheduled-context">
+            <span>Scheduled service</span>
+            <strong id="contextServiceTime"></strong>
+          </div>
+          <p class="waiting-note">The researcher will begin the scenario.</p>
+        </section>
+
+        <section id="journeyScreen" class="screen journey-screen" hidden>
+          <header class="route-header">
+            <div class="route-number" aria-label="Route 139">139</div>
+            <div><p class="eyebrow">Route 139</p><h1>Sunnybank <span aria-hidden="true">→</span> UQ Lakes</h1></div>
+          </header>
+          <p class="scheduled-line">Scheduled service <strong id="serviceTime"></strong></p>
+
+          <section id="statusCard" class="card status-card" aria-labelledby="statusHeading">
+            <div class="card-heading-row">
+              <div><p class="section-label">Current service status</p><h2 id="statusHeading"></h2></div>
+              <span id="statusIcon" class="status-icon" aria-hidden="true">◷</span>
+            </div>
+            <div id="etaBlock" class="eta-block">
+              <span id="etaLabel">Estimated arrival</span>
+              <strong id="etaValue" aria-live="polite"></strong>
+              <span id="delayText" class="delay-text"></span>
+            </div>
+            <p id="updateText" class="update-text" aria-live="polite"></p>
+            <p id="liveWarning" class="live-warning" role="status" hidden></p>
+          </section>
+
+          <section aria-labelledby="historyHeading">
+            <h2 id="historyHeading" class="section-title">Historical service reliability</h2>
+            <div class="history-grid">
+              <article class="card history-card"><span>On-time rate</span><strong id="onTimeRate"></strong></article>
+              <article class="card history-card"><span>Average delay</span><strong id="averageDelay"></strong></article>
+            </div>
+          </section>
+
+          <section id="recommendationCard" class="card recommendation-card" aria-labelledby="recommendationTitle">
+            <p class="section-label">Advisory recommendation</p>
+            <div class="recommendation-heading"><span id="recommendationIcon" aria-hidden="true"></span><h2 id="recommendationTitle"></h2></div>
+            <p id="recommendationReason" class="recommendation-reason"></p>
+            <p class="disclaimer">Based on historical service performance. Actual conditions may vary. For reference only.</p>
+          </section>
+
+          <section id="alternativeCard" class="card alternative-card" aria-labelledby="alternativeHeading" hidden>
+            <p class="section-label">Alternative route</p>
+            <h2 id="alternativeHeading">Route 130 <span aria-hidden="true">→</span> Route M2</h2>
+            <dl><div><dt>Departure</dt><dd id="alternativeDeparture"></dd></div><div><dt>Travel time</dt><dd>28 min</dd></div><div><dt>Transfers</dt><dd>1 transfer</dd></div></dl>
+          </section>
+
+          <div id="completeMessage" class="complete-message" role="status" hidden>Scenario complete — please give your decision to the researcher.</div>
+        </section>
+      </div>
+    </section>
+
+    <aside class="research-panel" aria-labelledby="controlsHeading">
+      <p class="panel-kicker">DECO6500 prototype</p>
+      <h2 id="controlsHeading">Researcher Control Panel</h2>
+      <p class="panel-help">Select a scenario to show its context. Timing starts only after Begin Scenario.</p>
+      <div class="scenario-controls" role="group" aria-label="Select scenario">
+        <button class="button scenario-button" data-scenario="A">Start Scenario A <small>Simple delay</small></button>
+        <button class="button scenario-button" data-scenario="B">Start Scenario B <small>Repeated ETA change</small></button>
+        <button class="button scenario-button" data-scenario="C">Start Scenario C <small>Live data unavailable</small></button>
+      </div>
+      <div class="control-divider"></div>
+      <p id="researchStatus" class="research-status" aria-live="polite">No scenario selected</p>
+      <button id="beginButton" class="button primary-button" disabled>Begin Scenario</button>
+      <button id="resetButton" class="button secondary-button" disabled>Reset Current Scenario</button>
+      <p class="privacy-note">No participant data is collected or stored.</p>
+    </aside>
+  </main>
+</body>
+</html>
